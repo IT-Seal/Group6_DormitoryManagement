@@ -23,6 +23,7 @@ const routes = [
       title: 'user页面',
       Auth: true
     },
+    
     children: [
       {
         path: 'info',

@@ -9,6 +9,8 @@
   -->
   <!-- <div>数量{{ userStore.count }}</div>
   <button @click="userStore.increat">count++</button> -->
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+
   <el-form ref="ruleFormRef" :model="userForm" status-icon :rules="rules" class="demo-ruleForm">
     <el-form-item label="用户邮箱" prop="email">
       <el-input v-model="userForm.email" autocomplete="off" placeholder="请输入你的邮箱" suffix-icon="Message" />
