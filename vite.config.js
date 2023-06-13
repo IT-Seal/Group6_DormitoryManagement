@@ -32,5 +32,6 @@ export default defineConfig({
   base: "/Group6_DormitoryManagement/",
   build: {
     outDir: "docs"
-  }
+  },
+  
 })

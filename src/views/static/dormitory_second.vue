@@ -12,8 +12,8 @@
       <h1 class="title">微校园管理-宿舍管理</h1>
       <div class="center">
         <!-- 内容区域 -->
-        <div v-if="selectedBuildingName && selectedBuildingDormitories.length > 0">
-          <!-- <div v-if=" selectedBuildingDormitories.length > 0"> -->
+        <!-- <div v-if="selectedBuildingName && selectedBuildingDormitories.length > 0"> -->
+        <div v-if="selectedBuildingDormitories.length > 0">
           <h2>宿舍信息</h2>
           <el-button type="warning" @click="addDormitory">添加宿舍</el-button>
           <el-input v-model="searchId" placeholder="请输入宿舍名称" clearable style="width: 120px;"></el-input>
@@ -87,7 +87,7 @@
 
 <script>
 import { defineComponent } from 'vue';
-import { getAllBuilding, getAllDormitories, addDormitory, editDormitory, deleteDormitory,getDormitoryById } from '../../http/DormitoryManagement';
+import { getAllBuilding, getAllDormitories, addDormitory, editDormitory, deleteDormitory, getDormitoryById } from '../../http/DormitoryManagement';
 
 export default defineComponent({
   data() {
@@ -122,15 +122,19 @@ export default defineComponent({
       formLabelWidth: '100px', // 表单label宽度
       searchText: '', // 查询宿舍的输入框绑定值
       schoolId: 0,
-      
+
     };
   },
   mounted() {
     this.getAllBuildingData();
     this.getAllDormitoryData();
+    console.log('schoolidiidid',this.schoolId);
+    console.log('Complete URL:', window.location.href);
     const params = new URLSearchParams(window.location.search);
-  this.schoolId = params.get('schoolId');
-  //console.log('选择的学校Id1:', this.schoolId);
+    this.schoolId = params.get('schoolId');
+    this.schoolId = parseInt(this.$route.query.schoolId);
+    console.log('mounted() is called');
+    console.log('获取的学校Id1:', this.schoolId);
   },
   watch: {
     selectedBuildingName(newValue) {
@@ -141,7 +145,7 @@ export default defineComponent({
     getAllBuildingData() {
       getAllBuilding()
         .then(res => {
-          console.log('建筑',res);
+          console.log('建筑', res);
           if (res) {
             console.log('选择的学校Id2:', this.schoolId);
             //this.buildings = res.data.buildings; // 将建筑数据存储到buildings数组中
@@ -149,7 +153,7 @@ export default defineComponent({
             //console.log('建筑23',buildings);
             // 过滤出与 this.schoolId 相同的建筑对象
             this.buildings = buildings.filter(building => building.schoolId === parseInt(this.schoolId));
-            console.log('建筑2',this.buildings);
+            console.log('建筑2', this.buildings);
           } else {
             console.log(res);
           }
@@ -177,67 +181,67 @@ export default defineComponent({
       this.dialogFormVisible = true;
     },
     save() {
-  if (this.editingDormitory) {
-    // 编辑操作
-    editDormitory(this.dormitory)  // 将 this.dormitory 传递给 editDormitory 函数
-      .then(res => {
-        console.log(res);
-        if (res && res.code === 1) {
-          // 更新成功后刷新宿舍数据
-          this.getAllDormitoryData();
-          this.editingDormitory = null; // 清空编辑的宿舍对象
-          this.dormitory = {  // 清空宿舍对象
-            building: '',
-            comment: '',
-            id: 0,
-            leader: 0,
-            leftNumber: 0,
-            liveNumber: 0,
-            maxNumber: 0,
-            name: '',
-            school: '',
-            status: 0,
-            type: 0,
-          };
-          this.dialogFormVisible = false;
-        } else {
-          console.log(res);
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  } else {
-    // 添加操作
-    addDormitory(this.dormitory)
-      .then(res => {
-        console.log(res);
-        if (res && res.code === 1) {
-          // 添加成功后刷新宿舍数据
-          this.getAllDormitoryData();
-          this.dormitory = {  // 清空宿舍对象
-            building: '',
-            comment: '',
-            id: 0,
-            leader: 0,
-            leftNumber: 0,
-            liveNumber: 0,
-            maxNumber: 0,
-            name: '',
-            school: '',
-            status: 0,
-            type: 0,
-          };
-          this.dialogFormVisible = false;
-        } else {
-          console.log(res);
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
-},
+      if (this.editingDormitory) {
+        // 编辑操作
+        editDormitory(this.dormitory)  // 将 this.dormitory 传递给 editDormitory 函数
+          .then(res => {
+            console.log(res);
+            if (res && res.code === 1) {
+              // 更新成功后刷新宿舍数据
+              this.getAllDormitoryData();
+              this.editingDormitory = null; // 清空编辑的宿舍对象
+              this.dormitory = {  // 清空宿舍对象
+                building: '',
+                comment: '',
+                id: 0,
+                leader: 0,
+                leftNumber: 0,
+                liveNumber: 0,
+                maxNumber: 0,
+                name: '',
+                school: '',
+                status: 0,
+                type: 0,
+              };
+              this.dialogFormVisible = false;
+            } else {
+              console.log(res);
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      } else {
+        // 添加操作
+        addDormitory(this.dormitory)
+          .then(res => {
+            console.log(res);
+            if (res && res.code === 1) {
+              // 添加成功后刷新宿舍数据
+              this.getAllDormitoryData();
+              this.dormitory = {  // 清空宿舍对象
+                building: '',
+                comment: '',
+                id: 0,
+                leader: 0,
+                leftNumber: 0,
+                liveNumber: 0,
+                maxNumber: 0,
+                name: '',
+                school: '',
+                status: 0,
+                type: 0,
+              };
+              this.dialogFormVisible = false;
+            } else {
+              console.log(res);
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
+    },
 
 
     editDormitory(dormitory) {
@@ -280,11 +284,11 @@ export default defineComponent({
     },
 
     editMembers(dormitoryId) {
-  this.$router.push({
-    path: '/dormitory_third',
-    query: { id: dormitoryId }
-  });
-},
+      this.$router.push({
+        path: '/dormitory_third',
+        query: { id: dormitoryId }
+      });
+    },
 
   },
 });
@@ -300,8 +304,10 @@ export default defineComponent({
   flex: 0 0 200px;
   background-color: #f0f0f0;
   padding: 20px;
-  position: relative; /* 添加此行 */
-  top: 0; /* 添加此行 */
+  position: relative;
+  /* 添加此行 */
+  top: 0;
+  /* 添加此行 */
 }
 
 
